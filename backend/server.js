@@ -6,8 +6,8 @@ import cors from "cors";
 import "dotenv/config";
 import express from "express";
 
-import { connectDB } from "./config/db.js";
-import notesRoutes from "./routes/notesroutes.js";
+import { connectDB } from "./src/config/db.js";
+import notesRoutes from "./src/routes/notesroutes.js";
 
 const app = express();
 
