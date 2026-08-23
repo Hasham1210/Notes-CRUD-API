@@ -1,28 +1,43 @@
-import express from "express";
-import notesRoutes from "./routes/notesRoutes.js";
-import {connectDB} from "./config/db.js";
-import dotenv from "dotenv";
-import rateLimiter from "./middleware/rateLimiter.js";
+import dns from "dns";
 
-dotenv.config();
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
+
+import cors from "cors";
+import "dotenv/config";
+import express from "express";
+
+import { connectDB } from "./config/db.js";
+import notesRoutes from "./routes/notesroutes.js";
 
 const app = express();
+
 const PORT = process.env.PORT || 5001;
-connectDB();
 
+app.use(cors());
+app.use(express.json());
 
-//Midelewre:
-app.use(express.json());//Aloows access to req.body in the routes
-app.use(rateLimiter);  
-
-app.use ((req, res, next) => {
-    console.log('Request received at ' + new Date().toISOString());
-    next();
-});     
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  next();
+});
 
 app.use("/api/notes", notesRoutes);
 
-app.listen(PORT, () => {
-    console.log("Server is running on port " + PORT);
-});
+const startServer = async () => {
+  try {
+    await connectDB();
 
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on http://localhost:${PORT}`);
+    });
+
+  } catch (error) {
+    console.error(
+      "❌ Server startup failed because MongoDB could not connect."
+    );
+
+    process.exit(1);
+  }
+};
+
+startServer();

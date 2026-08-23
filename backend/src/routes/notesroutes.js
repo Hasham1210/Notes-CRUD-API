@@ -5,9 +5,12 @@ import {getAllNotes} from "../controllers/notesController.js";
 import {createNotes} from "../controllers/notesController.js";
 import {updateNotes} from "../controllers/notesController.js";
 import {deleteNotes} from "../controllers/notesController.js";
+import {getNotesById} from "../controllers/notesController.js";
 
 
 router.get("/",getAllNotes);
+
+router.get("/:id",getNotesById);
 
 router.post("/",createNotes);
 

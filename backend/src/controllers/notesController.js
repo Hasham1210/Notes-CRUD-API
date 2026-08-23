@@ -12,8 +12,17 @@ export async function getAllNotes(req, res) {
     }
 };
 
-
-// res.status(201).json(note);
+export async function getNotesById(req, res) {
+    try {
+        const note = await Note.findById(req.params.id);            
+        res.json(note);
+    }
+    catch (err) {
+        console.log("Error in getNotesById controller: " + err.message);
+        res.status(500).json({ message: "Server Error here." });
+    }       
+        
+}
 
 
 export async function createNotes(req, res) {
